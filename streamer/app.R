@@ -23,13 +23,19 @@ process_record <- function(record) {
     setnames(dt, 'b', 'buyer_id')
     setnames(dt, 'E', 'event_timestamp')
     dt[, event_timestamp := as.POSIXct(event_timestamp / 1000, origin = '1970-01-01')]
+
     setnames(dt, 'q', 'quantity')
+    dt[, quantity := as.numeric(quantity)]
+
     setnames(dt, 'p', 'price')
+    dt[, price := as.numeric(price)]
+
     setnames(dt, 's', 'symbol')
     setnames(dt, 't', 'trade_id')
     setnames(dt, 'T', 'trade_timestamp')
     dt[, trade_timestamp := as.POSIXct(trade_timestamp / 1000, origin = '1970-01-01')]
     dt[,c("m", "M", "e"):=NULL]
+    dt[,volume:=price*quantity]
     
     # append to past trades stored in Redis
     redis_key <- paste0('trades:',symbol)

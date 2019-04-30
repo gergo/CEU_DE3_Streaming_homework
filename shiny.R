@@ -1,18 +1,20 @@
 ## connect to Redis
 library(rredis)
-redisConnect()
-
+library(treemap)
+library(highcharter)
 library(shiny)
 library(data.table)
 library(ggplot2)
 library(dplyr)
+redisConnect()
 
 ui <- fluidPage(
   titlePanel("Cryptocurrency trades"),
   sidebarLayout(
     sidebarPanel(uiOutput("symbolSelectorRadio")),
     mainPanel(tableOutput("tradesTable"),
-              plotOutput("tradesPlot"))
+              plotOutput("tradesPlot"),
+              highchartOutput('treemap', height = '800px'))
     )
   )
   
@@ -59,6 +61,15 @@ server <- shinyServer(function(input, output, session) {
     rbindlist(trades)
   })
 
+  output$treemap <- renderHighchart({
+    tm <- treemap(trades()[symbol==input$symbolSelector], index = c('symbol'),
+                  vSize = 'N', vColor = 'color',
+                  type = 'value', draw = FALSE)
+    N <- sum(symbols()$N)
+    hc_title(hctreemap(tm, animation = FALSE),
+             text = sprintf('Transactions (N=%s)', N))
+  })
+  
   output$tradesPlot <- renderPlot({
    plot(iris)
     

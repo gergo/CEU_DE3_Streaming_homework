@@ -85,3 +85,22 @@ INFO [2019-04-30 07:33:21 UTC] shardId-000000000001 End of initialize
 INFO [2019-04-30 07:33:32] Starting R Kinesis Consumer application
 INFO [2019-04-30 07:33:32 UTC] shardId-000000000000 Start of initialize 
 INFO [2019-04-30 07:33:32 UTC] shardId-000000000000 End of initialize
+INFO [2019-04-30 07:44:00] Starting R Kinesis Consumer application
+INFO [2019-04-30 07:44:00 UTC] shardId-000000000000 Start of initialize 
+INFO [2019-04-30 07:44:01 UTC] shardId-000000000000 End of initialize
+INFO [2019-04-30 07:44:11] Starting R Kinesis Consumer application
+INFO [2019-04-30 07:44:11 UTC] shardId-000000000001 Start of initialize 
+INFO [2019-04-30 07:44:12 UTC] shardId-000000000001 End of initialize
+INFO [2019-04-30 07:56:55] Starting R Kinesis Consumer application
+INFO [2019-04-30 07:56:55 UTC] shardId-000000000000 Start of initialize 
+INFO [2019-04-30 07:56:55 UTC] shardId-000000000000 End of initialize
+INFO [2019-04-30 07:57:06] Starting R Kinesis Consumer application
+INFO [2019-04-30 07:57:06 UTC] shardId-000000000001 Start of initialize 
+INFO [2019-04-30 07:57:06 UTC] shardId-000000000001 End of initialize
+INFO [2019-04-30 08:04:47 UTC] shardId-000000000001 Shutting down
+INFO [2019-04-30 08:04:56] Starting R Kinesis Consumer application
+INFO [2019-04-30 08:04:56 UTC] shardId-000000000001 Start of initialize 
+INFO [2019-04-30 08:04:56 UTC] shardId-000000000001 End of initialize
+INFO [2019-04-30 08:11:49] Starting R Kinesis Consumer application
+INFO [2019-04-30 08:11:49 UTC] shardId-000000000001 Start of initialize 
+INFO [2019-04-30 08:11:49 UTC] shardId-000000000001 End of initialize

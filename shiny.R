@@ -19,8 +19,7 @@ ui <- fluidPage(
 server <- shinyServer(function(input, output, session) {
   getStaticSymbols <- function() {
     symbols <- redisMGet(redisKeys('symbol:*'))
-    symbols <- data.table(
-      symbol = sub('^symbol:', '', names(symbols)))    
+    symbols <- data.table(symbol = sub('^symbol:', '', names(symbols)))    
     ## return
     symbols$symbol
   }
@@ -34,13 +33,16 @@ server <- shinyServer(function(input, output, session) {
     symbols <- redisMGet(redisKeys('symbol:*'))
     symbols <- data.table(
       symbol = sub('^symbol:', '', names(symbols)),
-      trade_count = as.numeric(symbols))
+      trade_count = as.numeric(symbols)
+    )
     
     ## return
     symbols
   })
   
-  output$tradesTable <- renderTable({symbols()})
+  output$tradesTable <- renderTable({
+    transpose(symbols())
+  })
   
   output$symbolSelectorRadio <- renderUI({
     radioButtons("symbolSelector",
@@ -58,13 +60,16 @@ server <- shinyServer(function(input, output, session) {
   })
 
   output$tradesPlot <- renderPlot({
-    # trades() %>%
-    rbindlist(trades) %>%
-      dplyr::filter(symbol=='ETHUSDT')
-      ggplot(aes(x = event_timestamp, y = price)) +
-      geom_line() +
-      labs(title = "AAPL Line Chart", y = "Closing Price", x = "") + 
-      theme_minimal()
+   plot(iris)
+    
+    
+     # trades() %>%
+ #    rbindlist(trades)[symbol=="ETHUSDT"]
+      
+  #    ggplot(rbindlist(trades)[symbol=="ETHUSDT"], aes(x = trade_timestamp, y = price)) +
+   #   geom_line() +
+  #    labs(y = "Price", x = "") +
+  #    theme_minimal()
   })
 })
 shinyApp(ui = ui, server = server, options = list(port = 8080))

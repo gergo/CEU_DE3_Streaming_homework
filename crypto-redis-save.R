@@ -13,8 +13,8 @@ store('BTC')
 store('ETH')
 
 ## list all keys with the "price" prefix and lookup the actual values
-redisMGet(redisKeys('price:*'))
-
+redisMGet(redisKeys('*'))
+redisMGet(redisKeys('symbol:*'))
 
 library(rredis)
 redisConnect()

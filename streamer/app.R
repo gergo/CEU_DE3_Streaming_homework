@@ -7,7 +7,7 @@ library(data.table)
 library(rredis)
 
 symbols_to_save <- c('ETHUSDT', 'LTCUSDT,', 'NEOUSDT', 'BTCUSDT', 'BNBUSDT')
-save_all_symbols <- TRUE # set to FALSE to only save <CRYPTO>USD pairs
+save_all_symbols <- FALSE # set to FALSE to only save <CRYPTO>USD pairs -> much faster
 
 process_record <- function(record) {
   symbol <- fromJSON(record)$s

@@ -15,7 +15,8 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(uiOutput("symbolSelectorRadio")),
     mainPanel(tableOutput("tradesTable"),
-              plotOutput("tradesPlot") #,
+              plotOutput("tradesPlot"),
+              tableOutput("selectedCryptoTrades") #,
               # DT::dataTableOutput("selectedTradesTable") #,
               # highchartOutput('tradesTreemap', height = '800px')
       )
@@ -89,6 +90,10 @@ server <- shinyServer(function(input, output, session) {
       geom_line() +
       labs(y = "Price", x = "Time") +
       theme_minimal()
+  })
+
+  output$selectedCryptoTrades <- renderTable({
+    trades()[symbol==input$symbolSelector][order(-volume)]
   })
   
   # output$selectedTradesTable = DT::renderDataTable({

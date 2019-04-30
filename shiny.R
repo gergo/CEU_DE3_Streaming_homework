@@ -6,6 +6,8 @@ library(shiny)
 library(data.table)
 library(ggplot2)
 library(dplyr)
+library(DT)
+
 redisConnect()
 
 ui <- fluidPage(
@@ -13,8 +15,10 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(uiOutput("symbolSelectorRadio")),
     mainPanel(tableOutput("tradesTable"),
-              plotOutput("tradesPlot"),
-              highchartOutput('treemap', height = '800px'))
+              plotOutput("tradesPlot") #,
+              # DT::dataTableOutput("selectedTradesTable") #,
+              # highchartOutput('tradesTreemap', height = '800px')
+      )
     )
   )
   
@@ -58,29 +62,37 @@ server <- shinyServer(function(input, output, session) {
     
     ## get frequencies
     trades <- redisMGet(redisKeys('trades:*'))
-    rbindlist(trades)
+    trades <- rbindlist(trades)
+    
+    # return
+    trades
   })
 
-  output$treemap <- renderHighchart({
-    tm <- treemap(trades()[symbol==input$symbolSelector], index = c('symbol'),
-                  vSize = 'N', vColor = 'color',
-                  type = 'value', draw = FALSE)
-    N <- sum(symbols()$N)
-    hc_title(hctreemap(tm, animation = FALSE),
-             text = sprintf('Transactions (N=%s)', N))
-  })
+  # output$tradesTreemap <- renderHighchart({
+  #   df <- trades()[symbol==input$symbolSelector]
+  #   df[, color := 1]
+  #   df[symbol %in% df[order(-volume)][1:30, symbol], color := 2]
+  #   tm <- treemap(df,
+  #                 c('volume'),
+  #                 vSize = 'volume',
+  #                 vColor = 'color',
+  #                 type = 'value',
+  #                 palette="RdYlBu",
+  #                 fun.aggregate="sum")
+  #   volume <- sum(trades()$volume)
+  #   hc_title(hctreemap(tm, animation = FALSE),
+  #            text = sprintf('Transaction volume=%s', volume))
+  # })
   
   output$tradesPlot <- renderPlot({
-   plot(iris)
-    
-    
-     # trades() %>%
- #    rbindlist(trades)[symbol=="ETHUSDT"]
-      
-  #    ggplot(rbindlist(trades)[symbol=="ETHUSDT"], aes(x = trade_timestamp, y = price)) +
-   #   geom_line() +
-  #    labs(y = "Price", x = "") +
-  #    theme_minimal()
+      ggplot(trades()[symbol==input$symbolSelector], aes(x = trade_timestamp, y = price)) +
+      geom_line() +
+      labs(y = "Price", x = "Time") +
+      theme_minimal()
   })
+  
+  # output$selectedTradesTable = DT::renderDataTable({
+  #   trades()[symbol==input$symbolSelector]
+  # })
 })
 shinyApp(ui = ui, server = server, options = list(port = 8080))
